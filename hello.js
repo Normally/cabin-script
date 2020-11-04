@@ -1,8 +1,8 @@
-/*! withcabin.com 0.5.5 */
+/*! withcabin.com 0.5.6 */
 
 ;(async function (window, document, host) {
 	// Use a custom domain or not
-	host = host.indexOf('{') == -1 ? host : 'ping.withcabin.com'
+	host = host[0] === '{' ? 'ping.withcabin.com' : host
 
 	const nav = window.navigator
 
@@ -23,22 +23,29 @@
 		})
 	}
 
-	const disable = 'disableCabin'
+	const disable = 'disableCabin',
+		ael = 'addEventListener',
+		cache = '/cache?',
+		ps = 'pushState',
+		sb = 'sendBeacon',
+		tm = 'timing'
+
 	const loc = window.location
 	const perf = window.performance
 	const screen = window.screen
 
-	const url = `https://${host}`
+	const url = 'https://' + host
 	const now = () => Date.now()
 	const add = () => (duration += now() - snapshot)
+
 	const params = (data) =>
 		Object.keys(data)
 			.map((key) => `${key}=${encodeURIComponent(data[key])}`)
 			.join('&')
 
 	const beacon = (url, data) => {
-		if (nav.sendBeacon) {
-			nav.sendBeacon(url, JSON.stringify(data))
+		if (nav[sb]) {
+			nav[sb](url, JSON.stringify(data))
 		} else {
 			return send(`${url}?${params(data)}`)
 		}
@@ -57,27 +64,17 @@
 		snapshot = start
 		duration = 0
 
-		// Get the total size of the page in bytes
-		let resource = perf.getEntriesByType('resource')
-		let navigation = perf.getEntriesByType('navigation')
-		let files = [...resource, ...navigation]
-		let size = 0
-
-		files.forEach((file) => {
-			size += file.decodedBodySize ? file.decodedBodySize : 0
-		})
-
 		// Get the load time
 		let time =
-			perf && perf.timing
-				? perf.timing.domContentLoadedEventEnd - perf.timing.navigationStart
+			perf && perf[tm]
+				? perf[tm].domContentLoadedEventEnd - perf[tm].navigationStart
 				: 0
 
 		// set data package
 		data = {
 			r: document.referrer,
 			w: screen.width,
-			s: size,
+			s: 0, // temporary placeholder
 			t: time > 0 ? time : 0,
 			p: loc.href,
 		}
@@ -86,18 +83,18 @@
 		let p = loc.pathname
 
 		await Promise.all([
-			send(`${url}/cache?${h}`).then((u) => {
+			send(url + cache + h).then((u) => {
 				data.u = u
 			}),
-			send(`${url}/cache?${h + p}`).then((up) => {
+			send(url + cache + h + p).then((up) => {
 				data.up = up
 			}),
 		])
 
-		send(`${url}/hello?${params(data)}`)
+		send(url + '/hello?' + params(data))
 	}
 
-	document.addEventListener('visibilitychange', () => {
+	document[ael]('visibilitychange', () => {
 		document.hidden ? add() : (snapshot = now())
 	})
 
@@ -106,10 +103,10 @@
 			return
 		}
 		!document.hidden ? add() : null
-		await beacon(`${url}/duration`, { d: duration, n: start, p: loc.href })
+		await beacon(url + '/duration', { d: duration, n: start, p: loc.href })
 	}
 	// log the pageview duration
-	window.addEventListener('beforeunload', sendDuration)
+	window[ael]('beforeunload', sendDuration)
 
 	let _pushState = function (type) {
 		let original = history[type]
@@ -128,13 +125,13 @@
 		}
 	}
 
-	window.history.pushState = _pushState('pushState')
+	window.history[ps] = _pushState(ps)
 
-	window.addEventListener('pushState', () => {
+	window[ael](ps, () => {
 		sendDuration()
 		pageview()
 	})
-	window.addEventListener('popstate', () => {
+	window[ael]('popstate', () => {
 		sendDuration()
 		pageview()
 	})
@@ -149,7 +146,7 @@
 				d: duration,
 				n: start,
 			}
-			await beacon(`${url}/event`, data)
+			await beacon(url + '/event', data)
 			callback && callback()
 		},
 	}
