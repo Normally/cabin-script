@@ -4,6 +4,8 @@ This is the client script for [withcabin.com](https://withcabin.com) - Privacy-f
 
 The script is accessible via CDN at https://scripts.withcabin.com/hello.js
 
+![Version number](https://img.shields.io/badge/dynamic/json?url=https://raw.githubusercontent.com/Normally/cabin-script/main/package.json&label=version&query=version&color=green) ![file size in bytes](https://img.badgesize.io/normally/cabin-script/main/dist/hello.js?compression=gzip) ![file size in bytes](https://img.badgesize.io/normally/cabin-script/main/dist/hello.js?compression=brotli)
+
 `yart dev` - run a dev server and visit localhost:8000 to test the script locally
 
 `yarn min` - minify the script to `/dist` with [terser](https://github.com/terser/terser)
