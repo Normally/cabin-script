@@ -1,4 +1,4 @@
-/*! Cabin - privacy-first analytics | withcabin.com | v0.5.5 */
+/*! withcabin.com 0.5.5 */
 
 ;(async function (window, document, host) {
 	// Use a custom domain or not
