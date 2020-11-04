@@ -1,0 +1,22 @@
+{
+  "name": "cabin-script",
+  "version": "0.5.5",
+  "description": "Client script for cabin analytics",
+  "main": "hello.js",
+  "scripts": {
+    "dev": "nodemon test-server.js",
+    "min": "terser hello.js --compress --comments /^!/ --mangle --ie8 --safari10 --ecma 5 --toplevel --warn --output dist/hello.js",
+    "deploy": "aws s3 sync ./dist s3://scripts.withcabin.com --delete && yarn invalidate",
+    "invalidate": "aws lambda invoke --function-name cabin-invalidateScript --region=eu-west-1"
+  },
+  "repository": "https://github.com/Normally/cabin-script",
+  "author": "Nic Mulvaney",
+  "license": "MIT",
+  "devDependencies": {
+    "express": "^4.17.1",
+    "terser": "^4.4.2"
+  },
+  "dependencies": {
+    "nodemon": "^2.0.4"
+  }
+}
