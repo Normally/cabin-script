@@ -1,4 +1,4 @@
-/*! withcabin.com 0.5.6 */
+/*! withcabin.com 0.5.7 */
 
 ;(async function (window, document, host) {
 	// Use a custom domain or not
@@ -10,7 +10,35 @@
 	if (nav.userAgent.search(/(bot|spider|crawl)/gi) > -1) {
 		return
 	}
-	const send = (url) => {
+
+	const disable = 'disableCabin',
+		ael = 'addEventListener',
+		cache = '/cache?',
+		ps = 'pushState',
+		sb = 'sendBeacon',
+		tm = 'timing',
+		ls = 'localStorage',
+		ci = 'Cabin is',
+		blocked = ['unblocked', 'blocked'],
+		log = console.log
+
+	const block = (viaPage) => {
+		let b = parseFloat(window[ls].getItem(blocked[1]))
+		b &&
+			viaPage &&
+			log(
+				ci +
+					' blocked on ' +
+					loc.hostname +
+					' - Use cabin.blockMe(0) to unblock'
+			)
+		return b
+	}
+
+	const send = (url, viaPage) => {
+		if (block(viaPage)) {
+			return new Promise((resolve) => resolve())
+		}
 		const xhr = new XMLHttpRequest()
 		return new Promise((resolve, reject) => {
 			xhr.onreadystatechange = () => {
@@ -22,13 +50,6 @@
 			xhr.send()
 		})
 	}
-
-	const disable = 'disableCabin',
-		ael = 'addEventListener',
-		cache = '/cache?',
-		ps = 'pushState',
-		sb = 'sendBeacon',
-		tm = 'timing'
 
 	const loc = window.location
 	const perf = window.performance
@@ -44,6 +65,9 @@
 			.join('&')
 
 	const beacon = (url, data) => {
+		if (block()) {
+			return
+		}
 		if (nav[sb]) {
 			nav[sb](url, JSON.stringify(data))
 		} else {
@@ -91,7 +115,7 @@
 			}),
 		])
 
-		send(url + '/hello?' + params(data))
+		send(url + '/hello?' + params(data), true)
 	}
 
 	document[ael]('visibilitychange', () => {
@@ -148,6 +172,11 @@
 			}
 			await beacon(url + '/event', data)
 			callback && callback()
+		},
+		blockMe(v) {
+			v = v ? 1 : 0
+			window[ls].setItem(blocked[1], v)
+			log(ci + ' now ' + blocked[v] + ' on ' + loc.hostname)
 		},
 	}
 	pageview()
