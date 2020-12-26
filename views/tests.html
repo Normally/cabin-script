@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Cabin client-script tests</title>
+		<style>
+			body {
+				font-family: sans-serif;
+				padding: 30px;
+				line-height: 140%;
+			}
+			button {
+				cursor: pointer;
+				appearance: none;
+				background: #eee;
+				border: 0;
+				padding: 5px 10px;
+				display: inline-block;
+				margin-bottom: 5px;
+			}
+			.button:active {
+				background: #ccc;
+			}
+			h2 {
+				font-size: 1em;
+				text-transform: uppercase;
+				color: #ccc;
+				margin-top: 2em;
+				margin-bottom: 2em;
+			}
+			p {
+				margin-left: 2em;
+			}
+			a {
+				color: inherit;
+				font-size: 0.85em;
+			}
+		</style>
+	</head>
+	<body>
+		<h1>Cabin client-script tests: {title}</h1>
+		<pre id="result"></pre>
+		<h2>Links</h2>
+		<p><a href="{linkTo}">{linkTo}</a><br /></p>
+		<h2>JS Events</h2>
+		<p>
+			<button onclick="javascript:cabin.event('Newsletter signup')">
+				Trigger (Newsletter Signup)
+			</button>
+			<br />
+			<button onclick="javascript:cabin.event('Video / Play / Intro')">
+				Trigger (Video / Play / Intro)
+			</button>
+		</p>
+		<h2>Attr Events</h2>
+		<p>
+			<button
+				id="hello"
+				onclick="javascript:alert('Hi there!')"
+				data-cabin-event="Saying hello"
+			>
+				Trigger alert with cabin-data-event
+			</button>
+			<br />
+			<button onclick="javascript:cabin.initEvents()">
+				Re-initialise attr events
+			</button>
+			<br />
+			<a href="{linkTo}" data-cabin-event="Leaving index event"
+				>Link with cabin-data-event</a
+			>
+		</p>
+		<h2>UTM Campaigns</h2>
+		<p>
+			<a
+				href="{linkTo}?utm_source=facebook&utm_medium=cpc&utm_campaign=spring_sale"
+			>
+				'spring_sale' campaign via facebook ad </a
+			><br />
+			<a
+				href="{linkTo}?utm_source=newsletter&utm_medium=email&utm_campaign=50%25_discount"
+			>
+				'50%_discount' campaign via newsletter
+			</a>
+		</p>
+		<script async defer src="/hello.js"></script>
+		<script>
+			let link = document.getElementById('hello')
+			link.addEventListener('click', (e) => console.log('first event'))
+		</script>
+		<!-- <script async defer src="https://scripts.withcabin.com/hello.js"></script> -->
+	</body>
+</html>

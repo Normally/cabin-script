@@ -12,4 +12,4 @@ The script is accessible via CDN at https://scripts.withcabin.com/hello.js
 
 `yarn deploy` - deploy to CDN and invalidate cache
 
-Note: This script is written with a tacit knowledge of terser compression and mangle. Some of the script may look unusual but it is written to be compressed as effectively as possible to reduce file size
+Note: This script is written with a tacit knowledge of terser compression and mangle. Some of the script may look unusual but it is written to be compressed as effectively as possible to reduce file size.

@@ -1,8 +1,8 @@
-/*! withcabin.com 0.5.7 */
+/*! withcabin.com 0.5.8 */
 
 ;(async function (window, document, host) {
 	// Use a custom domain or not
-	host = host[0] === '{' ? 'ping.withcabin.com' : host
+	host = host[0] === '{' ? 'cf2.withcabin.com' : host
 
 	const nav = window.navigator
 
@@ -13,6 +13,7 @@
 
 	const disable = 'disableCabin',
 		ael = 'addEventListener',
+		rel = 'removeEventListener',
 		cache = '/cache?',
 		ps = 'pushState',
 		sb = 'sendBeacon',
@@ -20,6 +21,7 @@
 		ls = 'localStorage',
 		ci = 'Cabin is',
 		blocked = ['unblocked', 'blocked'],
+		dce = 'data-cabin-event',
 		log = console.log
 
 	const block = (viaPage) => {
@@ -160,6 +162,8 @@
 		pageview()
 	})
 
+	let listener = (e) => cabin.event(e.target.getAttribute(dce))
+
 	// add global object for capturing events
 	window.cabin = {
 		async event(value, callback) {
@@ -173,6 +177,12 @@
 			await beacon(url + '/event', data)
 			callback && callback()
 		},
+		initEvents() {
+			document.querySelectorAll('[' + dce + ']').forEach((item) => {
+				item[rel]('click', listener)
+				item[ael]('click', listener)
+			})
+		},
 		blockMe(v) {
 			v = v ? 1 : 0
 			window[ls].setItem(blocked[1], v)
@@ -180,4 +190,5 @@
 		},
 	}
 	pageview()
+	cabin.initEvents()
 })(window, document, '{{.Host}}')
