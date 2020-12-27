@@ -2,6 +2,7 @@
 <html>
 	<head>
 		<title>Cabin client-script tests</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<style>
 			body {
 				font-family: sans-serif;
@@ -82,7 +83,7 @@
 				'50%_discount' campaign via newsletter
 			</a>
 		</p>
-		<script async defer src="/hello.js"></script>
+		<script async defer src="/hello.js?host=mulhoon.local:8080"></script>
 		<script>
 			let link = document.getElementById('hello')
 			link.addEventListener('click', (e) => console.log('first event'))

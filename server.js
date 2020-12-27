@@ -5,7 +5,7 @@ const fs = require('fs')
 const app = express()
 const port = 8000
 
-app.engine('html', function (filePath, options, callback) {
+const render = (filePath, options, callback) => {
 	fs.readFile(filePath, function (err, content) {
 		if (err) return callback(err)
 		// this is an extremely simple template engine
@@ -13,20 +13,28 @@ app.engine('html', function (filePath, options, callback) {
 			.toString()
 			.replace(/{title}/g, options.title)
 			.replace(/{linkTo}/g, options.linkTo)
+		if (options.host) {
+			rendered = rendered.replace(/{{.Host}}/g, options.host)
+		}
 		return callback(null, rendered)
 	})
-})
-app.set('views', './views')
+}
+app.engine('html', render)
+app.engine('js', render)
+
+app.set('views', './')
 app.set('view engine', 'html')
 
 app.get('/', function (req, res) {
-	res.render('tests', { title: '/', linkTo: 'about' })
+	res.render('tests.html', { title: '/', linkTo: 'about' })
 })
 app.get('/about', function (req, res) {
-	res.render('tests', { title: 'about', linkTo: '/' })
+	res.render('tests.html', { title: 'about', linkTo: '/' })
 })
 app.get('/hello.js', (req, res) => {
-	res.sendFile(path.join(__dirname + '/hello.js'))
+	console.log(req.query.host)
+	res.render('hello.js', { host: req.query.host })
+	// res.sendFile(path.join(__dirname + '/hello.js'))
 })
 
 app.listen(port, () => {
