@@ -2,7 +2,7 @@
 
 ;(async function (window, document, host) {
 	// Use a custom domain or not
-	host = host[0] === '{' ? 'cf2.withcabin.com' : host
+	host = host[0] === '{' ? 'ping.withcabin.com' : host
 
 	const nav = window.navigator
 
@@ -57,7 +57,7 @@
 	const perf = window.performance
 	const screen = window.screen
 
-	const url = '//' + host
+	const url = 'https://' + host
 	const now = () => Date.now()
 	const add = () => (duration += now() - snapshot)
 

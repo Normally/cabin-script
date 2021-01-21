@@ -32,9 +32,7 @@ app.get('/about', function (req, res) {
 	res.render('tests.html', { title: 'about', linkTo: '/' })
 })
 app.get('/hello.js', (req, res) => {
-	console.log(req.query.host)
 	res.render('hello.js', { host: req.query.host })
-	// res.sendFile(path.join(__dirname + '/hello.js'))
 })
 
 app.listen(port, () => {

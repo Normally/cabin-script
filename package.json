@@ -5,6 +5,7 @@
   "main": "hello.js",
   "scripts": {
     "dev": "nodemon server.js",
+    "start": "node server",
     "min": "terser hello.js --compress --comments /^!/ --mangle --ie8 --safari10 --ecma 5 --toplevel --warn --output dist/hello.js",
     "size": "echo 'Bytes:' && gzip -c dist/hello.js | wc -c",
     "deploy": "aws s3 sync ./dist s3://scripts.withcabin.com --delete && yarn invalidate",

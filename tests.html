@@ -51,6 +51,12 @@
 			<button onclick="javascript:cabin.event('Video / Play / Intro')">
 				Trigger (Video / Play / Intro)
 			</button>
+			<br />
+			<button
+				onclick="javascript:cabin.event('Result: https://my-awesome-website.com/')"
+			>
+				With URL
+			</button>
 		</p>
 		<h2>Attr Events</h2>
 		<p>
@@ -69,19 +75,35 @@
 			<a href="{linkTo}" data-cabin-event="Leaving index event"
 				>Link with cabin-data-event</a
 			>
+			<br />
+			<button
+				data-cabin-event="Result: https://my-awesome-website.com/"
+			>
+				Trigger with Result: https://my-awesome-website.com/
+			</button>
 		</p>
 		<h2>UTM Campaigns</h2>
 		<p>
 			<a
-				href="{linkTo}?utm_source=facebook&utm_medium=cpc&utm_campaign=spring_sale"
+				href="http://mulhoon.local:8000?utm_source=facebook&utm_medium=cpc&utm_campaign=spring_sale"
 			>
 				'spring_sale' campaign via facebook ad </a
 			><br />
 			<a
-				href="{linkTo}?utm_source=newsletter&utm_medium=email&utm_campaign=50%25_discount"
+				href="http://mulhoon.local:8000?utm_source=facebook&utm_medium=share&utm_campaign=spring_sale"
 			>
-				'50%_discount' campaign via newsletter
-			</a>
+				'spring_sale' campaign via facebook share </a
+			><br />
+			<a
+				href="http://mulhoon.local:8000?utm_source=newsletter&utm_medium=email&utm_campaign=50%25_discount"
+			>
+				'50%_discount' campaign via newsletter </a
+			><br />
+			<a
+				href="http://mulhoon.local:8000?utm_source=instagram&utm_medium=social&utm_campaign=50%25_discount"
+			>
+				'50%_discount' campaign via instagram </a
+			><br />
 		</p>
 		<script async defer src="/hello.js?host=mulhoon.local:8080"></script>
 		<script>
