@@ -1,6 +1,6 @@
 {
   "name": "cabin-script",
-  "version": "0.5.6",
+  "version": "0.5.9",
   "description": "Client script for cabin analytics",
   "main": "hello.js",
   "scripts": {

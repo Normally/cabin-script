@@ -1,4 +1,4 @@
-/*! withcabin.com 0.5.8 */
+/*! withcabin.com 0.5.9 */
 
 ;(async function (window, document, host) {
 	// Use a custom domain or not
@@ -24,7 +24,7 @@
 		dce = 'data-cabin-event',
 		log = console.log
 
-	const block = (viaPage) => {
+	const block = viaPage => {
 		let b = parseFloat(window[ls].getItem(blocked[1]))
 		b &&
 			viaPage &&
@@ -39,7 +39,7 @@
 
 	const send = (url, viaPage) => {
 		if (block(viaPage)) {
-			return new Promise((resolve) => resolve())
+			return new Promise(resolve => resolve())
 		}
 		const xhr = new XMLHttpRequest()
 		return new Promise((resolve, reject) => {
@@ -57,13 +57,13 @@
 	const perf = window.performance
 	const screen = window.screen
 
-	const url = 'https://' + host
+	const url = 'https://' + host // Should always be https://, only http:// for local testing
 	const now = () => Date.now()
 	const add = () => (duration += now() - snapshot)
 
-	const params = (data) =>
+	const params = data =>
 		Object.keys(data)
-			.map((key) => `${key}=${encodeURIComponent(data[key])}`)
+			.map(key => `${key}=${encodeURIComponent(data[key])}`)
 			.join('&')
 
 	const beacon = (url, data) => {
@@ -109,10 +109,10 @@
 		let p = loc.pathname
 
 		await Promise.all([
-			send(url + cache + h).then((u) => {
+			send(url + cache + h).then(u => {
 				data.u = u
 			}),
-			send(url + cache + h + p).then((up) => {
+			send(url + cache + h + p).then(up => {
 				data.up = up
 			}),
 		])
@@ -152,17 +152,12 @@
 	}
 
 	window.history[ps] = _pushState(ps)
-
 	window[ael](ps, () => {
 		sendDuration()
 		pageview()
 	})
-	window[ael]('popstate', () => {
-		sendDuration()
-		pageview()
-	})
 
-	let listener = (e) => cabin.event(e.target.getAttribute(dce))
+	let listener = e => cabin.event(e.target.getAttribute(dce))
 
 	// add global object for capturing events
 	window.cabin = {
@@ -178,7 +173,7 @@
 			callback && callback()
 		},
 		initEvents() {
-			document.querySelectorAll('[' + dce + ']').forEach((item) => {
+			document.querySelectorAll('[' + dce + ']').forEach(item => {
 				item[rel]('click', listener)
 				item[ael]('click', listener)
 			})

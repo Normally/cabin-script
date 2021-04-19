@@ -41,8 +41,11 @@
 		<h1>Cabin client-script tests: {title}</h1>
 		<pre id="result"></pre>
 		<h2>Links</h2>
-		<p><a href="{linkTo}">{linkTo}</a><br /></p>
-		<h2>JS Events</h2>
+		<p><a href="{linkTo}">{linkTo}</a><br />
+		<a href="#events">Events</a><br />
+			<a href="#campaigns">Campaigns</a><br />
+	</p>
+		<h2 id="events">JS Events</h2>
 		<p>
 			<button onclick="javascript:cabin.event('Newsletter signup')">
 				Trigger (Newsletter Signup)
@@ -82,7 +85,7 @@
 				Trigger with Result: https://my-awesome-website.com/
 			</button>
 		</p>
-		<h2>UTM Campaigns</h2>
+		<hd id="campaigns">UTM Campaigns</h2>
 		<p>
 			<a
 				href="http://mulhoon.local:8000?utm_source=facebook&utm_medium=cpc&utm_campaign=spring_sale"
